@@ -2871,7 +2871,7 @@ details.collapse summary::-webkit-details-marker{
 }
 .bg-yellow-500{
   --tw-bg-opacity: 1;
-  background-color: rgb(12 53 106 / var(--tw-bg-opacity));
+  background-color: rgb(255 131 41 / var(--tw-bg-opacity));
 }
 .bg-\[\#f5f1e4\]{
   --tw-bg-opacity: 1;
