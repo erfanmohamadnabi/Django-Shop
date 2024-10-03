@@ -1,0 +1,122 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <title>ثبت نام</title>
+
+    <style>
+        {% if frm.errors %}
+        .container{
+            display: block;
+        }
+        {% else %}
+        .container{
+            display: none;
+        }
+        {% endif %}
+    </style>
+</head>
+
+<body>
+
+    {% if frm.errors %}
+    {% else %}
+    <div class="mask">
+        <a class="card">
+            <h2>ورود به عنوان کاربر</h2>
+            <img src="{% static 'img/user.png' %}" alt="">
+        </a>
+        <a class="card">
+            <h2>ورود به عنوان همکار</h2>
+            <img src="{% static 'img/admin.png' %}" alt="">
+        </a>
+
+    </div>
+    {% endif %}
+
+    <div class="container" id="container">
+        <div class="form-container sign-in">
+
+
+            <form method="post" >
+                {% csrf_token %}
+
+                <h1 style="margin-bottom: 20px;"> ایجاد حساب کاربری</h1>
+                <input style="visibility: hidden;height: 0;margin: 0;" name="user_type" id="type-input" type="text" class="hidden">
+                {{ frm.name }}
+                {{ frm.email }}
+                {{ frm.password }}
+                {{ frm.re_password }}
+                <a href="login.html">حساب کاربری دارید؟ وارد شوید</a>
+                <button>ثبت نام</button>
+            </form>
+
+
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Welcome Back!</h1>
+                    <p>Enter your personal details to use all of site features</p>
+                    <button class="hidden" id="login">Sign In</button>
+                </div>
+                <div dir="rtl" class="toggle-panel toggle-right">
+                    <h1>ثبت نام</h1>
+                    <p>حساب کاربری دارید ؟  وارد شوید.</p>
+                    <button class="hidden" id="register">ورود به حساب</button>
+
+
+                    <!-- ! FORM VALID ERRORS   -->
+
+                    {% if frm.errors %}
+                        {% if frm.name.errors %}
+                            <p class="text-danger">{{ frm.name.errors }}</p>
+                        {% endif %}
+                        {% if frm.email.errors %}
+                            <p class="text-danger">{{ frm.email.errors }}</p>
+                        {% endif %}
+                        {% if frm.password.errors %}
+                            <p class="text-danger">{{ frm.password.errors }}</p>
+                        {% endif %}
+                        {% if frm.re_password.errors %}
+                            <p class="text-danger">{{ frm.re_password.errors }}</p>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- ! FORM VALID ERRORS   -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="{% static 'js/jquery.js' %}"></script>
+
+    <!-- * SELECT USER TYPE -->
+
+    <script>
+        $(document).ready(function(){
+            $(".mask a").click(function(){
+                var type = $("#type-input")
+                $(this).fadeOut()
+                $(".container").fadeIn()
+                if ($(this).children("h2").text() === "ورود به عنوان همکار"){
+                    type.val('colleague')
+                }else if($(this).children("h2").text() === "ورود به عنوان کاربر"){
+                    type.val('user')
+                }
+            })
+        })
+    </script>
+
+    <!-- * SELECT USER TYPE -->
+</body>
+
+</html>
+
