@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'login',
     'about',
+    'contact',
 
     #! MY APPS
 ]
