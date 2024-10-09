@@ -1,6 +1,6 @@
 
 
-//____________________ FORM PROFILE START _________________
+//* ____________________ FORM PROFILE START _________________
 
 var forms = document.getElementsByClassName('form_profile');
 for (var i = 0; i < forms.length; i++) {
@@ -65,4 +65,4 @@ console.error('خطا:', error);
     });
 }
 
-//____________________ FORM PROFILE FINISH _________________
+//* ____________________ FORM PROFILE FINISH _________________

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}<title>سوالات متداول</title>{% endblock %}
+
+{% block content %}
+
+<section>
+        <div class="relative flex justify-center items-center">
+
+                <img class="object-cover lg:h-auto h-60" src="{% static 'img/bg-faq.jpg' %}" alt="">
+
+            <div style="margin-top: 40px;" class="form-control w-full max-w-lg absolute p-4 text-center">
+                <h2 class="font-YekanBakh-ExtraBlack text-3xl mb-4 text-white">سوال خود را جستجو کنید...</h2>
+                <div class="relative">
+                  <input id="searchInput" type="text" placeholder="تایپ کنید ..." class="input input-bordered w-full max-w-lg placeholder:text-sm" /> 
+                  <button class="btn absolute top-0 left-0 rounded-r-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                      </svg>
+                      
+                  </button>
+                </div>
+              </div>
+        </div>
+
+</section>
+    
+<section style="margin: 150px 0;" class="my-14 px-4">
+        <div class="container mx-auto max-w-screen-xl">
+
+            {% for x in qestions %}
+            <div class="collapse collapse-plus bg-base-200 my-4" data-title="{{ x.title }}">
+              <input type="radio" name="my-accordion-3" checked="checked" /> 
+              <div class="collapse-title text-base font-YekanBakh-ExtraBold">
+                {{ x.title }}
+              </div>
+              <div class="collapse-content"> 
+                <p>{{ x.question }}</p>
+              </div>
+            </div>
+            {% endfor %}
+            
+         
+
+            <p style="display: none;text-align: center;font-size: 18px;width: 100%;align-items: center;justify-content: center;height:240px;" id="not_find">هیج موردی یافت نشد</p>       
+            
+          </div>
+
+</section>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const collapses = document.querySelectorAll('.collapse');
+  const notFindElement = document.getElementById('not_find');
+
+  searchInput.addEventListener('input', function() {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    let found = false;
+
+    collapses.forEach(collapse => {
+      const title = collapse.getAttribute('data-title').toLowerCase();
+
+      if (title.includes(searchTerm)) {
+        collapse.style.display = 'grid';
+        found = true;
+      } else {
+        collapse.style.display = 'none';
+      }
+    });
+
+    if (!found) {
+      notFindElement.style.display = 'flex';
+    } else {
+      notFindElement.style.display = 'none';
+    }
+  });
+</script>
+
+{% endblock %}
+

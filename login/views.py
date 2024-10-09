@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .forms import Signup
-from django.contrib.auth.models import User
+from user_account.models import CustomUser
 
 # Create your views here.
 
@@ -18,7 +18,7 @@ def SignUp_User(request):
             email = data.get('email')
             password = data.get("password")
 
-            new_user = User.objects.create(
+            new_user = CustomUser.objects.create(
                 username = email,
                 first_name = name,
             )

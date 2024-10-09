@@ -5,9 +5,20 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    #! APP URLS
+
     path('',include('login.urls')),
     path('',include('about.urls')),
     path('',include('contact.urls')),
+    path('',include('weblog.urls')),
+    path('',include('questions.urls')),
+    path('',include('user_account.urls')),
+    path('',include('products.urls')),
+
+    #! APP URLS
+
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
 urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

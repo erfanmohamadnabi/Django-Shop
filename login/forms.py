@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from user_account.models import CustomUser
 import re
 
 class Signup(forms.Form):
@@ -12,7 +12,7 @@ class Signup(forms.Form):
 
     def clean_email(self):
         e = self.cleaned_data.get("email")
-        index_user = User.objects.filter(username = e).first()
+        index_user = CustomUser.objects.filter(username = e).first()
         if index_user is None:
             if "@" and "." in e and e is not None:
                 pass
