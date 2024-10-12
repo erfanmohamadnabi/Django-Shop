@@ -66,3 +66,64 @@ console.error('خطا:', error);
 }
 
 //* ____________________ FORM PROFILE FINISH _________________
+
+
+
+//* ____________________ FORM ADD ADDRESS START _______________
+
+var forms = document.getElementsByClassName('address_form');
+for (var i = 0; i < forms.length; i++) {
+    forms[i].addEventListener('submit', function(event) {
+        event.preventDefault();
+          
+        var form = event.target;
+        var url = form.getAttribute('action');
+        var method = form.getAttribute('method');
+        var formData = new FormData(form);
+        
+        fetch(url, {
+method: method,
+body: formData
+})
+.then(response => response.json())
+.then(data => {
+if (data.success) {
+
+   var status = document.getElementById('success');
+   status.style.display = 'flex'
+   status.style.opacity = '1'; 
+
+   setTimeout(function() {
+    status.style.transition = '1s'
+    status.style.opacity = '0'; 
+    setTimeout(function() {
+        status.style.display = 'none';
+        window.location.href = '/account/addresses';
+    }, 1000);
+}, 2000);
+
+
+
+
+}else if(data.error){
+    var error = document.getElementById('error');
+    error.style.display = 'flex'
+    error.style.opacity = '1'; 
+ 
+    setTimeout(function() {
+        error.style.transition = '1s'
+        error.style.opacity = '0'; 
+     setTimeout(function() {
+        error.style.display = 'none';
+     }, 1000);
+ }, 2000);  
+}
+
+})
+.catch(error => {
+console.error('خطا:', error);
+});
+    });
+}
+
+//* ____________________ FORM ADD ADDRESS FINISH _______________

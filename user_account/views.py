@@ -6,7 +6,18 @@ from products.models import Favorites
 from products.models import Cart,CartItem
 from django.db.models import Sum
 from .models import User_Address as Adresses
+import requests
+import pandas as pd
+
 # Create your views here.
+
+
+#! NESHAN API KEY
+
+API_KEY = 'service.dd66b2a61b0642bcb42f5ee57cd83322'
+
+#! NESHAN API KEY
+
 
 #* USER DASHBOARD
 
@@ -124,12 +135,80 @@ def Delete_CartItem(request,item_id):
 #* USER CART
 
 
-#* USER ADDRESS
+#* USER ADDRESSES
 
-def User_Address(request):
+def User_Addresses(request):
     addresses = Adresses.objects.filter(user = request.user)
     context = {"addresses":addresses}
 
     return render(request,'adresses.html',context)
 
-#* USER ADDRESS
+
+#* USER ADDRESSES
+
+
+#* USER ADD ADDRESS
+
+def User_AddAddress(request):
+
+    context = {}
+
+    address = None
+
+    if request.POST:
+        city = request.POST.get("city")
+        area = request.POST.get("area")
+        address = request.POST.get("address")
+        
+        print(city + area + address)
+
+
+    #! GET MAP LINK
+
+    if address :
+        headers = {
+            'Api-Key' : API_KEY
+        }
+
+        response = requests.get(f'https://api.neshan.org/v4/geocoding?address={address} ',headers=headers)
+
+        j = response.json()
+
+        if j['status'] == 'NO_RESULT':
+            data = {"error":"error"}
+
+            return JsonResponse(data)
+        
+        L = []
+
+        print(j['location'].items())
+
+        for i,x in j['location'].items():
+            L.append(x)
+
+        lan = round(float(L[0]), 7)  
+        lat = round(float(L[1]), 7)
+
+        map_data = f"https://maps.google.com/?q={lat},{lan}"
+
+
+        print(map_data)
+
+        #! NEW ADDRESS
+
+        new_address = Adresses.objects.create(user = request.user,city = city,area = area,address = address,location = map_data)
+        new_address.save()
+        
+        data = {"success":"success"}
+
+        return JsonResponse(data)
+
+        #! NEW ADDRESS
+
+    #! GET MAP LINK
+
+       
+
+    return render(request,'add_address.html',context)
+
+#* USER ADD ADDRESS
