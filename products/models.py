@@ -1,8 +1,19 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 from user_account.models import CustomUser
+from jdatetime import date, datetime as jdatetime
+import random
 
 # Create your models here.
+
+
+#! GET DATE & TIME
+
+current_date = jdatetime.now().date()
+date = str(current_date).replace("-","/")
+
+#! GET DATE & TIME
+
 
 #* PRODUCT CATEGORY MODEL
 
@@ -101,7 +112,12 @@ class Product_Attributes(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,verbose_name='کاربر')
+    created_at = models.CharField(default=date,verbose_name='تاریخ ایجاد',max_length=1000)
+    image = models.ImageField(verbose_name='عکس فیش واریزی',blank=True,null=True)
+    code = models.CharField(verbose_name='کد سفارش',max_length=1000,blank=True,null=True)
     is_paid = models.BooleanField(default=False,verbose_name='پرداخت شده')
+
+    #! TOTAL PRICE
 
     @property
     def total_price(self):
@@ -109,6 +125,41 @@ class Cart(models.Model):
         for cart_item in self.cartitems.all():
             total += (cart_item.price * cart_item.quantity)
         return int(total)
+
+    #! TOTAL PRICE
+
+   
+    #! FINAL PRICE    
+
+    @property
+    def final_price(self):
+        total = 0
+        for cart_item in self.cartitems.all():
+            total += (cart_item.price * cart_item.quantity)
+        return int(total + 30000)
+    
+    #! FINAL PRICE    
+    
+    
+    #! TOTAL DISCOUT   
+
+    @property
+    def total_discount(self):
+        total_discount = 0
+        for cart_item in self.cartitems.all():
+            if cart_item.product.off_price:
+                total_discount += (int(cart_item.product.off_price) - cart_item.price) * cart_item.quantity
+        return int(total_discount)
+
+    #! GENERATE CODE
+
+    def save(self, *args, **kwargs):
+        if self.code is None:
+            generated_code = random.randint(10000,99999)
+            self.code = str(generated_code)
+        super().save(*args, **kwargs)
+
+    #! GENERATE CODE
 
     def __str__(self):
         return self.user.username

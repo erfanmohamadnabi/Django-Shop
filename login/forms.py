@@ -4,10 +4,10 @@ import re
 
 class Signup(forms.Form):
     
-    name=forms.CharField(max_length=200,widget=forms.TextInput(attrs={'class':'form-control','placeholder': 'نام و نام خانوادگی'}))
-    email = forms.EmailField(max_length=200, widget=forms.TextInput(attrs={'class':'form-control','placeholder': 'ایمیل'}))
-    password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','id':'password','placeholder': 'رمز عبور'}))
-    re_password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','id':'re_password','placeholder': 'تکرار رمز عبور'}))
+    name=forms.CharField(max_length=200,widget=forms.TextInput(attrs={"name":"name","maxlength":"200","class":"input input-bordered w-full my-2"}))
+    email = forms.EmailField(max_length=200, widget=forms.TextInput(attrs={"name":"signinnn","maxlength":"200","class":"input input-bordered w-full my-2"}))
+    password=forms.CharField(widget=forms.PasswordInput(attrs={"class":"input input-bordered w-full my-2"}))
+    re_password=forms.CharField(widget=forms.PasswordInput(attrs={"class":"input input-bordered w-full my-2"}))
 
 
     def clean_email(self):

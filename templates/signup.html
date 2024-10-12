@@ -1,122 +1,123 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block title %}<title>ثبت نام</title>{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <title>ثبت نام</title>
+{% block css %}
+    
+<link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
 
-    <style>
-        {% if frm.errors %}
-        .container{
-            display: block;
-        }
-        {% else %}
-        .container{
-            display: none;
-        }
-        {% endif %}
-    </style>
-</head>
+{% endblock %}
 
-<body>
+{% block menu %}{% endblock %}
 
-    {% if frm.errors %}
-    {% else %}
-    <div class="mask">
+{% block content %}
+
+{% if frm.errors %}
+{% else %}
+<div class="mask">
         <a class="card">
-            <h2>ورود به عنوان کاربر</h2>
+            <h2>ثبت نام به عنوان کاربر</h2>
             <img src="{% static 'img/user.png' %}" alt="">
         </a>
         <a class="card">
-            <h2>ورود به عنوان همکار</h2>
+            <h2>ثبت نام به عنوان همکار</h2>
             <img src="{% static 'img/admin.png' %}" alt="">
         </a>
 
-    </div>
-    {% endif %}
+</div>
+{% endif %}
 
-    <div class="container" id="container">
-        <div class="form-container sign-in">
+<section class="h-screen px-4 flex items-center">
+        <div class="container mx-auto max-w-screen-lg">
+            <div class="bg-white rounded-2xl overflow-hidden">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="flex-1 p-8 md:p-4 lg:p-20 lg:pb-0">
+                        <form action="" method="post">
+                            {% csrf_token %}
 
+                            <input style="visibility: hidden;height: 0;margin: 0;" name="user_type" id="type-input" type="text" class="hidden">
 
-            <form method="post" >
-                {% csrf_token %}
-
-                <h1 style="margin-bottom: 20px;"> ایجاد حساب کاربری</h1>
-                <input style="visibility: hidden;height: 0;margin: 0;" name="user_type" id="type-input" type="text" class="hidden">
-                {{ frm.name }}
-                {{ frm.email }}
-                {{ frm.password }}
-                {{ frm.re_password }}
-                <a href="login.html">حساب کاربری دارید؟ وارد شوید</a>
-                <button>ثبت نام</button>
-            </form>
+                            <h2 class="text-3xl font-YekanBakh-ExtraBlack my-4">ثبت نام</h2>
 
 
-        </div>
-        <div class="toggle-container">
-            <div class="toggle">
-                <div class="toggle-panel toggle-left">
-                    <h1>Welcome Back!</h1>
-                    <p>Enter your personal details to use all of site features</p>
-                    <button class="hidden" id="login">Sign In</button>
-                </div>
-                <div dir="rtl" class="toggle-panel toggle-right">
-                    <h1>ثبت نام</h1>
-                    <p>حساب کاربری دارید ؟  وارد شوید.</p>
-                    <button class="hidden" id="register">ورود به حساب</button>
+                            <label class="label">
+                                <span class="label-text-alt">نام و نام خانوادگی:</span>
+                              </label>
+                            {{ frm.name }}
 
 
-                    <!-- ! FORM VALID ERRORS   -->
+                            <label class="label">
+                                <span class="label-text-alt">ایمیل:</span>
+                              </label>
+                            {{ frm.email }}
 
-                    {% if frm.errors %}
-                        {% if frm.name.errors %}
-                            <p class="text-danger">{{ frm.name.errors }}</p>
-                        {% endif %}
-                        {% if frm.email.errors %}
-                            <p class="text-danger">{{ frm.email.errors }}</p>
-                        {% endif %}
-                        {% if frm.password.errors %}
-                            <p class="text-danger">{{ frm.password.errors }}</p>
-                        {% endif %}
-                        {% if frm.re_password.errors %}
-                            <p class="text-danger">{{ frm.re_password.errors }}</p>
-                        {% endif %}
-                    {% endif %}
 
-                    <!-- ! FORM VALID ERRORS   -->
+                            <label class="label">
+                                <span class="label-text-alt">پسورد:</span>
+                              </label>
+                            {{ frm.password }}
+
+                            <label class="label">
+                                <span class="label-text-alt">پسورد:</span>
+                              </label>
+                            {{ frm.re_password }}
+
+
+                            <button class="btn bg-stone-800 hover:bg-stone-900 text-white w-full my-4">ثبت نام</button>
+                        </form>
+                        
+                        <!--     ERRPRS        -->
+
+                        <p style="margin: 15px;">{{ frm.email.errors }}</p>
+                        <p style="margin:5px;">{{ frm.password.errors }}</p>
+                        <p style="margin:5px;">{{ frm.re_password.errors }}</p>
+                        <p style="margin:5px;">{{ frm.name.errors }}</p>
+
+                        <!--     ERRPRS        -->
+
+                        <p class="text-center my-4">قبلا ثبت نام کرده اید؟ <a href="/login">وارد شوید</a></p>
+                    </div>
+                    <div class="hidden md:block">
+                        <img class="bg-cover" style="width: 300px;height:100%;object-fit: cover;" src="{% static 'img/signup.jpg' %}" alt="">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+</section>
 
+{% endblock %}
 
-    <script src="{% static 'js/jquery.js' %}"></script>
+{% block footer %}{% endblock %}
 
-    <!-- * SELECT USER TYPE -->
+{% block js %}
+    
+<script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/jquery.js' %}"></script>
 
-    <script>
-        $(document).ready(function(){
-            $(".mask a").click(function(){
-                var type = $("#type-input")
-                $(this).fadeOut()
-                $(".container").fadeIn()
-                if ($(this).children("h2").text() === "ورود به عنوان همکار"){
-                    type.val('colleague')
-                }else if($(this).children("h2").text() === "ورود به عنوان کاربر"){
-                    type.val('user')
-                }
-            })
+{% endblock %}
+
+{% block script %}
+
+<!-- * SELECT USER TYPE -->
+
+<script>
+    $(document).ready(function(){
+        $(".mask a").click(function(){
+            var type = $("#type-input")
+            $(this).parent().fadeOut()
+            if ($(this).children("h2").text() === "ورود به عنوان همکار"){
+                type.val('colleague')
+            }else if($(this).children("h2").text() === "ورود به عنوان کاربر"){
+                type.val('user')
+            }
         })
-    </script>
+    })
+</script>
 
-    <!-- * SELECT USER TYPE -->
-</body>
+<!-- * SELECT USER TYPE -->
 
-</html>
-
+{% endblock %}

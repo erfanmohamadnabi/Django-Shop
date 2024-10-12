@@ -11,7 +11,10 @@ def SignUp_User(request):
     context = {"frm":frm}
 
     if request.POST:
+
+        print("salam")
         if frm.is_valid():
+            print("valid")
             user_type = request.POST.get("user_type")
             data = frm.cleaned_data
             name = data.get("name")

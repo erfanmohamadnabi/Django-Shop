@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block meta %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow"/>
+<meta name="description" content="{{ info.meta_seo }}">
+<meta property="og:title" content="{{ info.title_seo }}" class="title_seo" />
+<meta content="{{ info.keywords }}" name="keywords"/>
+{% endblock %}
+
 {% block title %}<title>{{ info.title }}</title>{% endblock %}
 
 {% block content %}
@@ -47,7 +56,7 @@
                                 </span>
                             </div>
                         </div>
-                        <img class="rounded-2xl" src="{{ info.image.url }}" alt="">
+                        <img class="rounded-2xl" src="{{ info.image.url }}" alt="{{ info.title }}">
                         <p class="mt-4">
                           {{ info.text|safe }}
                         </p>
@@ -70,7 +79,7 @@
                               {% if comments %}
                               {% for x in comments %}
                               <div class="comment">
-                                <div class="image_comment"><img src="{% static 'img/profile.png' %}" alt=""></div>
+                                <div class="image_comment"><img src="{% static 'img/profile.png' %}" alt="پروفایل"></div>
                                 <div class="message_comment">
                                   <div class="hader_message">
                                     <p>{{ x.date }}</p> <p>{{ x.user.first_name }}</p>
@@ -100,7 +109,7 @@
                           <div class="flex items-center my-4">
                               <div class="avatar">
                                   <div class="w-16 rounded-full">
-                                    <img src="{{ x.image.url }}" />
+                                    <img src="{{ x.image.url }}" alt="{{ x.title }}"/>
                                   </div>
                                 </div>
                                 <div class="mr-2">
