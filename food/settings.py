@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'user_account',
     'ckeditor',
     'ckeditor_uploader',
+    'site_data',
 
     #! MY APPS
 ]

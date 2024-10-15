@@ -24,7 +24,25 @@ API_KEY = 'service.dd66b2a61b0642bcb42f5ee57cd83322'
 def Dashboard(request):
     notices = Notice.objects.all()
     cart = Cart.objects.filter(user = request.user)
-    context = {"cart":cart}
+    current_cart = Cart.objects.filter(user = request.user,is_paid = False).first()
+    current_items = current_cart.cartitems.all()
+
+    #! GET NOT PAID ITEMS COUNT
+
+    not_paid = cart.filter(is_paid = False)
+    not_paid_items = sum(cart.cartitems.count() for cart in not_paid)
+
+    #! GET NOT PAID ITEMS COUNT
+
+    #! GET PAID ITEMS COUNT
+
+    paid = cart.filter(is_paid = True)
+    paid_items = sum(cart.cartitems.count() for cart in paid)
+
+    #! GET PAID ITEMS COUNT
+
+
+    context = {"cart":cart,"current_items":current_items,"not_paid_items":not_paid_items,"paid_items":paid_items}
 
     return render(request,'dashboard.html',context)
 
@@ -144,6 +162,20 @@ def User_Addresses(request):
     return render(request,'adresses.html',context)
 
 
+#! DELETE ADDRESS
+
+def Delete_Address(request,address_id):    
+    if address_id is not None:
+        order_detail = Adresses.objects.get(id = address_id)
+
+        if order_detail is not None:
+            order_detail.delete()
+            return redirect("/account/addresses")
+            
+    return redirect("/account/addresses")
+
+#! DELETE ADDRESS
+
 #* USER ADDRESSES
 
 
@@ -160,7 +192,6 @@ def User_AddAddress(request):
         area = request.POST.get("area")
         address = request.POST.get("address")
         
-        print(city + area + address)
 
 
     #! GET MAP LINK
@@ -186,8 +217,8 @@ def User_AddAddress(request):
         for i,x in j['location'].items():
             L.append(x)
 
-        lan = round(float(L[0]), 7)  
-        lat = round(float(L[1]), 7)
+        lan = round(float(L[0]), 9)  
+        lat = round(float(L[1]), 9)
 
         map_data = f"https://maps.google.com/?q={lat},{lan}"
 
@@ -212,3 +243,84 @@ def User_AddAddress(request):
     return render(request,'add_address.html',context)
 
 #* USER ADD ADDRESS
+
+
+#* USER EDIT ADDRESS
+
+def User_EditAddress(request,id):
+    current_address = Adresses.objects.filter(user = request.user,id = id).first()
+    if current_address is None:
+        return redirect('/')
+    context = {"address":current_address}
+
+    address = None
+
+    if request.POST:
+        city = request.POST.get("city")
+        area = request.POST.get("area")
+        address = request.POST.get("address")
+        
+        print(city + area + address)
+
+    
+    #! GET MAP LINK
+
+    if address :
+        headers = {
+            'Api-Key' : API_KEY
+        }
+
+        response = requests.get(f'https://api.neshan.org/v4/geocoding?address={address} ',headers=headers)
+
+        j = response.json()
+
+        if j['status'] == 'NO_RESULT':
+            data = {"error":"error"}
+
+            return JsonResponse(data)
+        
+        L = []
+
+        print(j['location'].items())
+
+        for i,x in j['location'].items():
+            L.append(x)
+
+        lan = round(float(L[0]), 9)  
+        lat = round(float(L[1]), 9)
+
+        map_data = f"https://maps.google.com/?q={lat},{lan}"
+
+
+        print(map_data)
+
+        #! EDIT ADDRESS
+
+        current_address.city = city
+        current_address.area = area
+        current_address.address = address
+        current_address.location = map_data
+        current_address.save()
+        
+        data = {"success":"success"}
+
+        return JsonResponse(data)
+
+        #! EDIT ADDRESS
+
+    #! GET MAP LINK
+
+    
+
+    return render(request,'edit_addres.html',context)
+
+#* USER EDIT ADDRESS
+
+#* 404 VIEW
+
+def Not_Find(request):
+    context = {}
+
+    return render(request,'404.html',context)
+
+#* 404 VIEW
