@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .forms import Signup
+from .forms import Signup,Login_form
 from user_account.models import CustomUser
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
@@ -16,7 +16,6 @@ def SignUp_User(request):
 
         print("salam")
         if frm.is_valid():
-            print("valid")
             user_type = request.POST.get("user_type")
             data = frm.cleaned_data
             name = data.get("name")
@@ -31,8 +30,10 @@ def SignUp_User(request):
             new_user.set_password(password)
 
             if user_type == 'user':
+                new_user.user_type = 'user'
                 new_user.save()
             elif user_type == 'colleague':
+                new_user.user_type = "sender"
                 new_user.save()
                 return redirect('/signup/success')
 
@@ -48,6 +49,35 @@ def Success_Signup(request):
     return render(request,'success_signup.html',context)
 
 #* SUCCESS SIGNUP COLLEAGUE
+
+#* LOGIN VIEW
+
+def Login_User(request):
+    frm = Login_form(request.POST or None)
+    context = {"frm":frm}
+
+    if request.POST:
+        if frm.is_valid():
+            data = frm.cleaned_data
+            username = data.get("username")
+            password = data.get("password")
+
+            #! VERIFY USER
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('/account/dashboard') 
+            
+            else:
+                context['error'] = 'نام کاربری یا رمز عبور اشتباه است'
+
+            #! VERIFY USER
+
+    return render(request,'login.html',context)
+
+#* LOGIN VIEW
 
 #* LOGOUT VIEW
 

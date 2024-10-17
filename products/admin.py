@@ -17,6 +17,7 @@ class ProductAttributesInline(admin.StackedInline):
     extra = 3 
 
 class Product_Admin(admin.ModelAdmin):
+    readonly_fields = ('off_price',)
     inlines = [ProductImagesInline, ProductAttributesInline]
 
 admin.site.register(Product, Product_Admin)
@@ -35,3 +36,9 @@ admin.site.register(CartItem)
 admin.site.register(Favorites)
 
 #* PRODUCT FAVORITES ADMIN
+
+#* PRODUCT OFFER ADMIN
+
+admin.site.register(Amazing_Offer)
+
+#* PRODUCT OFFER ADMIN

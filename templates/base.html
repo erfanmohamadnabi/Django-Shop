@@ -52,8 +52,8 @@
                           </label> 
                         </div> 
                         <!-- Sidebar content here -->
-                        <li><a href="index.html">صفحه اصلی</a></li>
-                        <li><a href="shop.html">فروشگاه</a></li>
+                        <li><a href="/">صفحه اصلی</a></li>
+                        <li><a href="/list-product">فروشگاه</a></li>
                         <li><details>
                             <summary><a href="#">زیرمنو</a></summary>
                             <ul class="p-2 z-10 w-48 m-0">
@@ -71,7 +71,6 @@
                             </ul>
                         </details></li>
                         <li><a href="checkout.html">جزئیات پرداخت</a></li>
-                        <li><a href="comparison.html">مقایسه محصول</a></li>
                         <li><a href="blog.html">وبلاگ</a></li>
                         <li><a href="contact-us.html">تماس با ما</a></li>
                         
@@ -81,16 +80,18 @@
                   </div>
                 </div>
                 <div class="flex items-center lg:flex-1 gap-8">
-                    <div><a href="index.html"><img src="../assets/images/logo.png" alt=""></a></div>
+                    <div><a href="/"><img src="{{ site_data.logo.url }}" alt=""></a></div>
                     <div class="hidden lg:block form-control w-full">
                         <div class="relative">
-                          <input type="text" placeholder="جستجو کنید   ..." class="input input-bordered w-full placeholder:text-sm" /> 
-                          <button class="btn absolute top-0 left-0 rounded-r-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                          <form action="/list-product/search" method="get">
+                            <input name="search" type="text" placeholder="جستجو کنید   ..." class="input input-bordered w-full placeholder:text-sm" /> 
+                            <button class="btn absolute top-0 left-0 rounded-r-none">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                               </svg>
                               
-                          </button>
+                            </button>
+                          </form>
                         </div>
                       </div>
                 </div>
@@ -121,23 +122,26 @@
             <div class="flex justify-between items-center pb-4">
                 <div class="block lg:hidden form-control w-full">
                     <div class="relative">
-                      <input type="text" placeholder="جستجو کنید در ترازو ..." class="input input-bordered w-full placeholder:text-sm" /> 
+                      <form action="/list-product/search" method="get">
+                        <input name="search" type="text" placeholder="جستجو کنید   ..." class="input input-bordered w-full placeholder:text-sm" /> 
+                      
                       <button class="btn absolute top-0 left-0 rounded-r-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                           </svg>
                           
                       </button>
+                    </form>
                     </div>
                 </div>  
                 <div class="flex items-center gap-8">
                     <div class="hidden lg:block">
                         
                         <ul class="flex menu lg:menu-horizontal !p-0">
-                          <li><a href="index.html">صفحه اصلی</a></li>
-                          <li><a href="shop.html">فروشگاه</a></li>
+                          <li><a href="/">صفحه اصلی</a></li>
+                          <li><a href="/list-product">فروشگاه</a></li>
                           <li><details>
-                              <summary><a href="#">مگامنو</a></summary>
+                              <summary><a href="#">دسته بندی ها</a></summary>
                               <ul class="menu xl:menu-horizontal lg:min-w-max bg-white rounded-box gap-10 z-10">
                                 <li>
                                   <a href="order.html">سفارش ها</a>
@@ -162,11 +166,9 @@
     
                               </ul>
                           </details></li>
-                          <li><a href="checkout.html">جزئیات پرداخت</a></li>
-                          <li><a href="comparison.html">مقایسه محصول</a></li>
-                          <li><a href="blog.html">وبلاگ</a></li>
-                          <li><a href="about-us.html">درباره ما</a></li>
-                          <li><a href="about-us.html">تماس با ما</a></li>
+                          <li><a href="/weblog">وبلاگ</a></li>
+                          <li><a href="/about-us">درباره ما</a></li>
+                          <li><a href="/contact-us">تماس با ما</a></li>
                       </ul>
                     </div>
                 </div> 
@@ -223,36 +225,35 @@
           </div> -->
             <div class="grid grid-cols-12 gap-4 leading-8">
                 <div class="col-span-12 lg:col-span-5">
-                    <img class="mb-4" src="../assets/images/logo.png" alt="">
+                    <img class="mb-4" src="{{ site_data.logo.url }}" alt="لوگوی سایت">
                     <p>
-                      ترازو با فراهم آوردن تنوع معقولی از محصولات در کنار عرضه با قیمت مناسب آن‌ها، به دنبال خرید راحت و رضایت‌بخش ابزارآلات برای همراهان خودش است و این مهم را با مهیا کردن امکان بررسی فنی و کاربردی ابزارآلات و ارائه محتوای مناسب و غنی محقق می‌سازد.
+                    {{ site_data.description }}
                     </p>
                 </div>
                 <div class="col-span-12 lg:col-span-2 text-right md:text-center">
                     <h3 class="font-YekanBakh-Bold text-white mb-4 text-lg">دسترسی سریع</h3>
                     <ul>
-                        <li><a href="question.html">سوالات متداول</a></li>
-                        <li><a href="single-product.html">صفحه محصول</a></li>
-                        <li><a href="single-page.html">جزئیات وبلاگ</a></li>
-                        <li><a href="successful.html">ثبت موفق</a></li>
-                        <li><a href="unsuccessful.html">ثبت ناموفق</a></li>
+                        <li><a href="/questions">سوالات متداول</a></li>
+                        <li><a href="/list-product">فروشگاه</a></li>
+                        <li><a href="/weblog">وبلاگ</a></li>
+                        <li><a href="/about-us">درباره ما</a></li>
+                        <li><a href="/contact-us">تماس با ما</a></li>
                     </ul>
                 </div>
                 <div class="col-span-12 lg:col-span-2 text-right md:text-center">
                     <h3 class="font-YekanBakh-Bold text-white mb-4 text-lg">خدمات شرکت</h3>
                     <ul>
-                        <li><a href="order.html">سفارش ها</a></li>
-                        <li><a href="interest-list.html">علاقمندی ها</a></li>
-                        <li><a href="edit-account.html">جزئیات حساب کاربری</a></li>
-                        <li><a href="download.html">دانلود ها</a></li>
-                        <li><a href="404.html">404</a></li>
+                        <li><a href="/account/cart">سفارش ها</a></li>
+                        <li><a href="/account/favorites">علاقمندی ها</a></li>
+                        <li><a href="/account/profile">جزئیات حساب کاربری</a></li>
+
                     </ul>
                 </div>
                 <div class="col-span-12 lg:col-span-3">
-                    <h3 class="font-YekanBakh-Bold text-white mb-4 text-lg">عضویت در خبرنامه</h3>
+                    <h3 class="font-YekanBakh-Bold text-white mb-4 text-lg">نماد اعتماد</h3>
                     <div class="flex items-center">
-                      <img src="../assets/images/enamad_logo.png" alt="">
-                      <img src="../assets/images/samandehi_logo.png" alt="">
+                      <img width="120px" src="{% static 'img/enamad.png' %}" alt="">
+                      <img width="120px" src="{% static 'img/samandehi.png' %}" alt="">
                     </div>
                 </div>
             </div>
@@ -261,7 +262,7 @@
   
     <footer class="footer footer-center p-4 bg-stone-700 text-white">
         <div>
-          <p>Copyright © 2023 - تمامی حقوق برای راست چین محفوظ می باشد</p>
+          <p>Copyright © 2024 - تمامی حقوق برای الفا میوه محفوظ می باشد</p>
         </div>
     </footer>
 

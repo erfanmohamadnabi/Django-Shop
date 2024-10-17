@@ -3,6 +3,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from user_account.models import CustomUser
 from jdatetime import date, datetime as jdatetime
 import random
+from django.urls import reverse
 
 # Create your models here.
 
@@ -20,6 +21,7 @@ date = str(current_date).replace("-","/")
 class Product_Category(models.Model):
     name = models.CharField(verbose_name='نام دسته بندی',max_length=1000)
     english_name = models.CharField(verbose_name='نام دسته بندی ( انگلیسی )',max_length=1000)
+    image = models.ImageField(verbose_name='تصویر یا ایکون برای نمایش در صغحه اصلی')
 
     def __str__(self) :
         return (self.name)
@@ -29,7 +31,7 @@ class Product_Category(models.Model):
         verbose_name_plural="اضافه کردن دسته بندی"
 
     def save(self, *args, **kwargs):
-        if not self.slug:
+        if not self.english_name:
             self.english_name = self.title.replace(' ','-')
         super().save(*args, **kwargs)
 
@@ -42,6 +44,7 @@ class Product(models.Model):
     english_name = models.CharField(verbose_name='نام محصول ( انگلیسی )',max_length=1000)
     content = RichTextUploadingField(verbose_name='درباره محصول')
     price = models.CharField(verbose_name='قیمت نهایی محصول',max_length=1000)
+    discount_percentage = models.IntegerField(verbose_name='درصد تخفیف',blank=True,null=True)
     off_price = models.CharField(verbose_name='قیمت تخفیف خورده ( اختیاری )',null=True,blank=True,max_length=1000)
     category = models.ForeignKey(Product_Category,verbose_name='دسته بندی',on_delete=models.CASCADE)
     image = models.ImageField(upload_to='product_image',verbose_name='تصویر شاخص محصول')
@@ -64,20 +67,42 @@ class Product(models.Model):
         verbose_name="محصول جدید"
         verbose_name_plural="اضافه کردن محصول"
 
-    #! REPLACE " " ---> " - "
 
     def save(self, *args, **kwargs):
+
+        #! ADD DISCOUNT 
+        
+        if self.pk:
+            old_product = Product.objects.get(pk=self.pk)
+           
+            if old_product.price != self.price:
+               
+                if self.discount_percentage:
+                    self.off_price = self.price
+                    original_price = int(self.price)  
+                    discount_amount = (self.discount_percentage / 100) * original_price
+                    self.price = int(original_price - discount_amount)
+                else:
+                    self.off_price = None
+
+        #! ADD DISCOUNT 
+
+        #! REPLACE " " ---> " - "
+
         if self.english_name:
             self.english_name = self.english_name.replace(' ','-')
         super().save(*args, **kwargs) 
 
-    #! REPLACE " " ---> " - "   
+        #! REPLACE " " ---> " - "   
+
+    def get_absolute_url(self):
+        return reverse("detail_product",args=[self.id,self.english_name])
 
 
 #! PRODUCT IMAGES
 
 class Product_Images(models.Model):
-    product = models.ForeignKey(Product,verbose_name='محصول',on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,verbose_name='محصول',on_delete=models.CASCADE,related_name="images")
     image = models.ImageField(upload_to='product_image',verbose_name='تصویر محصول')
 
     def __str__(self) :
@@ -94,7 +119,7 @@ class Product_Images(models.Model):
 #! PRODUCT ATTRIBUTES
 
 class Product_Attributes(models.Model):
-    product = models.ForeignKey(Product,verbose_name='محصول',on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,verbose_name='محصول',on_delete=models.CASCADE,related_name="attributes")
     attribute = models.CharField(verbose_name='ویژگی',max_length=1000)
 
     def __str__(self) :
@@ -206,3 +231,18 @@ class Favorites(models.Model):
 
 
 #* FAVORITES
+
+
+#* AMAZING OFFER
+
+class Amazing_Offer(models.Model):
+    product = models.ManyToManyField(Product,verbose_name='محصولات')
+
+    class Meta:
+        verbose_name="اضافه کردن تخفیف "
+        verbose_name_plural="پیشنهاد شگفت انگیز"
+
+    def __str__(self):
+          return "پیشنهاد شگفت انگیز"
+
+#* AMAZING OFFER

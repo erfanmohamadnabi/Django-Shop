@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}<title>نتایج جستجو</title>{% endblock %}
+
+
+{% block content %}
+
+
+    <p class="success-send"><span></span><img src="{% static 'img/icons8-done-30.png' %}" alt=""></p>
+    <p class="error-send"><span></span><img src="{% static 'img/icons8-close-188.png' %}" alt=""></p>
+
+
+    <section class="my-14 mt-4 px-4">
+        <div class="container mx-auto max-w-screen-xl">
+          <div class="bg-white p-6 rounded-3xl mb-4">
+            <nav class="flex" aria-label="Breadcrumb">
+              <ol class="inline-flex items-center space-x-1 md:space-x-2">
+                  <li class="inline-flex items-center">
+                      <a href="#" class="inline-flex items-center">
+                      خانه
+                      </a>
+                  </li>
+                  <li>
+                      <div class="flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
+                            
+                          <a href="#" class="mr-1 text-sm font-medium">فروشگاه</a>
+                      </div>
+                  </li>
+              </ol>
+          </nav>  
+            </div>
+            <div class="grid grid-cols-12 gap-4">
+                <!-- <div class="col-span-12 lg:col-span-3 order-2 lg:order-1">
+                  <div class="bg-white rounded-3xl mb-4 p-4">
+                    <h3 class="font-YekanBakh-ExtraBold text-base">فیلتر بر اساس قیمت:</h3>
+                    <div class="my-4">
+                      <input type="range" min="0" max="100" value="40" class="range range-warning" />
+                    </div>
+                    <span>قیمت تا 143000 هزار تومان</span>
+
+                  </div>
+                  <div class="bg-white rounded-3xl mb-4 p-4">
+                    <h3 class="font-YekanBakh-ExtraBold text-base">دسته های محصولات:</h3>
+                    <div class="my-4">
+                      <ul class="menu">
+                        <li><a>دسته بندی اول</a></li>
+                        <li>
+                          <details open>
+                            <summary>دسته بندی دوم</summary>
+                            <ul>
+                              <li><a>زیر منوی 1 دسته بندی دوم</a></li>
+                              <li><a>زیر منوی 2 دسته بندی دوم</a></li>
+                              <li>
+                                <details open>
+                                  <summary>دسته بندی سوم</summary>
+                                  <ul>
+                                    <li><a>زیر منوی 1 دسته بندی سوم</a></li>
+                                    <li><a>زیر منوی 2 دسته بندی سوم</a></li>
+                                  </ul>
+                                </details>
+                              </li>
+                            </ul>
+                          </details>
+                        </li>
+                        <li><a>دسته بندی چهارم</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="bg-white rounded-3xl p-4">
+                    <h3 class="font-YekanBakh-ExtraBold text-base">فیلتر براساس برند:</h3>
+                    <div class="flex flex-col mt-4 gap-4">
+                      <div class="flex items-center justify-between">
+                        <span>رونیکس</span>
+                        <input type="radio" name="radio-6" class="radio radio-warning" checked />
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <span>دیوالت</span>
+                        <input type="radio" name="radio-6" class="radio radio-warning" checked />
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <span>ماکیتا</span>
+                        <input type="radio" name="radio-6" class="radio radio-warning" checked />
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <span>توسن</span>
+                        <input type="radio" name="radio-6" class="radio radio-warning" checked />
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+                <div class="col-span-12 lg:col-span-9 order-1 lg:order-2">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                      {% if products %}
+
+                      {% for x in products %}
+
+                      <div class="bg-white rounded-3xl leading-10 p-4">
+                            <a href="{{ x.get_absolute_url }}" class="flex flex-col items-center justify-center">
+                              <img style="width: 100%;height: 270px;object-fit: cover;border-radius: 10px;" class="mb-4" src="{{ x.image.url }}" alt="">
+                            </a>
+                          <div class="text-center">
+                            <a href="single-product.html"><h3 class="font-YekanBakh-ExtraBold text-base">{{ x.name }}</h3></a>
+                            <div class="flex justify-center gap-4 text-base mt-4">
+                              {% if x.off_price %}
+                              <span class="line-through">{{ x.off_price }} تومان</span>
+                              {% endif %}
+                              <span class="text-yellow-500">{{ x.price }} تومان</span>
+                            </div>    
+                            <div class="flex justify-center gap-2 items-center mt-4 ">
+                              <a style="cursor: pointer;" class="bg-yellow-500 p-2 text-white rounded-lg submit-order">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                </svg>                          
+                              </a>
+                              <a class="bg-yellow-500 p-2 text-white rounded-lg" href="{{ x.get_absolute_url }}">
+                                <p style="display: flex;align-items: center;justify-content: center;"  class=" h-6">مشاهده محصول</p>                                
+                              </a>
+
+                              <a style="cursor: pointer;" class="bg-yellow-500  p-2 text-white rounded-lg submit-like">
+                                <img class="w-6 h-6" src="{% static 'img/like.svg' %}" alt="">
+                              </a>
+
+                            </div>  
+                          </div>
+
+                          <!-- {{ x.id }} -->
+
+                          <!--! LIKE AND ORDER FORM -->
+
+                          <form class="like-form" style="visibility: hidden;height: 0;"  action="" method="post">
+                            {% csrf_token %}
+                            <input name="product-id" type="text" value="{{ x.id }}">
+                            <input class="product-type" name="request-type" type="text" value="">
+                            <button type="submit"></button>
+                          </form>
+
+                          <!--! LIKE AND ORDER FORM -->
+
+                      </div>
+
+                      {% endfor %}
+                      {% else %}
+                      <p style="font-size: 20px;margin: 20px;">محصولی یافت نشد !</p>
+                      {% endif %}
+                      
+
+                    </div>
+
+
+                    <div class="flex justify-center mt-10">
+                      {% if products %}
+                        <div class="join">
+                            {% if products.has_previous %}
+                                <a style="border-radius: 10px;" href="?search={{ search }}&page={{ products.previous_page_number }}" class="join-item btn">قبلی</a>
+                            {% endif %}
+
+                            <button style="border-radius: 10px;" class="join-item btn">صفحه {{ products.number }}</button>
+
+                            {% if products.has_next %}
+                                <a style="border-radius: 10px;" href="?search={{ search }}&page={{ products.next_page_number }}" class="join-item btn">بعدی</a>
+                            {% endif %}
+                        </div>
+                      {% endif %}
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block js %}
+    
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/products.js' %}"></script>
+
+<script>
+  $(document).ready(function() {
+    
+      $('.submit-like').click(function() {
+          
+          // پیدا کردن نوع از طریق input مرتبط
+          var type = $(this).closest('.bg-white').find('.product-type')
+          type.val("like")
+          
+          $(this).closest('.bg-white').find('.like-form button').click(); 
+      });
+
+      $('.submit-order').click(function(){
+          
+          // پیدا کردن نوع از طریق input مرتبط
+          var type = $(this).closest('.bg-white').find('.product-type')
+          type.val("order")
+          
+          $(this).closest('.bg-white').find('.like-form button').click(); 
+      });
+  });
+</script>
+
+{% endblock %}

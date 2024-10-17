@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}<title>ورود</title>{% endblock %}
+
+{% block css %}
+    
+<link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+{% endblock %}
+
+{% block menu %}{% endblock %}
+
+{% block content %}
+
+
+<section class="h-screen px-4 flex items-center">
+        <div class="container mx-auto max-w-screen-lg">
+            <div class="bg-white rounded-2xl overflow-hidden">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="flex-1 p-8 md:p-4 lg:p-20 lg:pb-0">
+                        <form action="" method="post">
+                            {% csrf_token %}
+
+                            <input style="visibility: hidden;height: 0;margin: 0;" name="user_type" id="type-input" type="text" class="hidden">
+
+                            <h2 class="text-3xl font-YekanBakh-ExtraBlack my-4">ورود</h2>
+
+
+
+
+                            <label class="label">
+                                <span class="label-text-alt">ایمیل:</span>
+                              </label>
+                            {{ frm.username }}
+
+
+                            <label class="label">
+                                <span class="label-text-alt">پسورد:</span>
+                              </label>
+                            {{ frm.password }}
+
+                        
+
+
+                            <button class="btn bg-stone-800 hover:bg-stone-900 text-white w-full my-4">تایید</button>
+                        </form>
+                        
+                        <!--!     ERRPRS        -->
+
+                        <p style="margin: 15px;">{{ frm.username.errors }}</p>
+                        <p style="margin:5px;">{{ error }}</p>
+
+                        <!--!     ERRPRS        -->
+
+                        <p class="text-center my-4">حساب کاربری ندارید ؟ <a href="/signup">ثبت نام کنید</a></p>
+                    </div>
+                    <div class="hidden md:block">
+                        <img class="bg-cover" style="width: 300px;height:100%;object-fit: cover;" src="{% static 'img/signup.jpg' %}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block js %}
+    
+<script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/jquery.js' %}"></script>
+
+{% endblock %}
+
+{% block script %}
+
+<!-- * SELECT USER TYPE -->
+
+<script>
+    $(document).ready(function(){
+        $(".mask a").click(function(){
+            var type = $("#type-input")
+            $(this).parent().fadeOut()
+            if ($(this).children("h2").text() === "ورود به عنوان همکار"){
+                type.val('colleague')
+            }else if($(this).children("h2").text() === "ورود به عنوان کاربر"){
+                type.val('user')
+            }
+        })
+    })
+</script>
+
+<!-- * SELECT USER TYPE -->
+
+{% endblock %}

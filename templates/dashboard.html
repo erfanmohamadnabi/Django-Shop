@@ -189,7 +189,11 @@
                         <div class="flex items-center justify-between bg-yellow-500 rounded-3xl p-8">
                             
                             <div class="leading-8 ml-2 text-white">
+                              {% if current_items == 0 %}
+                              <p class="text-xl font-YekanBakh-ExtraBold">0 محصول</p>
+                              {% else %}
                                 <p class="text-xl font-YekanBakh-ExtraBold">{{ current_items.count }} محصول</p>
+                              {% endif %}
                                 <span class="text-sm mb-2 font-YekanBakh-Bold">در سبد خرید شما</span>
                             </div>
                             <div>

@@ -24,8 +24,13 @@ API_KEY = 'service.dd66b2a61b0642bcb42f5ee57cd83322'
 def Dashboard(request):
     notices = Notice.objects.all()
     cart = Cart.objects.filter(user = request.user)
-    current_cart = Cart.objects.filter(user = request.user,is_paid = False).first()
-    current_items = current_cart.cartitems.all()
+    
+    if cart:
+        current_cart = Cart.objects.filter(user = request.user,is_paid = False).first()
+        current_items = current_cart.cartitems.all()
+    else:
+        current_cart = 0
+        current_items = 0
 
     #! GET NOT PAID ITEMS COUNT
 

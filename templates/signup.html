@@ -61,7 +61,7 @@
                             {{ frm.password }}
 
                             <label class="label">
-                                <span class="label-text-alt">پسورد:</span>
+                                <span class="label-text-alt"> تکرار پسورد:</span>
                               </label>
                             {{ frm.re_password }}
 
@@ -109,9 +109,9 @@
         $(".mask a").click(function(){
             var type = $("#type-input")
             $(this).parent().fadeOut()
-            if ($(this).children("h2").text() === "ورود به عنوان همکار"){
+            if ($(this).children("h2").text() === "ثبت نام به عنوان همکار"){
                 type.val('colleague')
-            }else if($(this).children("h2").text() === "ورود به عنوان کاربر"){
+            }else if($(this).children("h2").text() === "ثبت نام به عنوان کاربر"){
                 type.val('user')
             }
         })

@@ -15,6 +15,7 @@ urlpatterns = [
     path('',include('questions.urls')),
     path('',include('user_account.urls')),
     path('',include('products.urls')),
+    path('',include('index.urls')),
 
     #! APP URLS
 

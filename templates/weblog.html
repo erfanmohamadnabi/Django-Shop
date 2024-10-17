@@ -35,7 +35,7 @@
           {% for x in blogs %}
           <div class="bg-white p-4 rounded-3xl">
               <div class="relative">
-                <a href="{{ x.get_absolute_url }}"><img class="rounded-2xl" src="{{ x.image.url }}" alt=""></a>
+                <a href="{{ x.get_absolute_url }}"><img style="height: 250px;object-fit: cover;width: 100%;" class="rounded-2xl" src="{{ x.image.url }}" alt=""></a>
                 <div class="absolute top-4 left-4 bg-white border-t-4 border-yellow-400 p-2 px-3 rounded-xl">
                   <div class="flex flex-col">
                     <span class="font-YekanBakh-ExtraBold text-2xl">{{ x.date }}</span>
@@ -61,17 +61,15 @@
       </div>
       <div class="flex justify-center mt-10">
         <div class="join">
-            <button class="join-item btn pageination">&laquo;</button>
             {% if page_obj.has_previous %}
-                <a href="?page=1" class="join-item btn pageination">صفحه اول</a>
-                <a href="?page={{ page_obj.previous_page_number }}" class="join-item btn">{{ page_obj.previous_page_number }}</a>
+                <a style="border-radius: 10px;" href="?page=1" class="join-item btn pageination">صفحه اول</a>
+                <a style="border-radius: 10px;" href="?page={{ page_obj.previous_page_number }}" class="join-item btn">{{ page_obj.previous_page_number }}</a>
             {% endif %}
             <button class="join-item btn pageination active">صفحه {{ page_obj.number }}</button>
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" class="join-item btn">{{ page_obj.next_page_number }}</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}" class="join-item btn">صفحه آخر</a>
+                <a style="border-radius: 10px;" href="?page={{ page_obj.next_page_number }}" class="join-item btn">{{ page_obj.next_page_number }}</a>
+                <a  style="border-radius: 10px;"href="?page={{ page_obj.paginator.num_pages }}" class="join-item btn">صفحه آخر</a>
             {% endif %}
-            <button class="join-item btn pageination">&raquo;</button>
         </div>
     </div>
   </div>

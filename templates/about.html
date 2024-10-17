@@ -74,10 +74,10 @@
 <section class="my-14 px-4">
         <div class="container mx-auto max-w-screen-lg">
             <div class="text-center mb-8">
-                <h2 class="font-YekanBakh-ExtraBlack text-3xl"> تست چیکار میکنه؟</h2>
+                <h2 class="font-YekanBakh-ExtraBlack text-3xl"> الفا چیکار میکنه؟</h2>
               </div>
               <div class="leading-8">
-                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
+                <p>{{ about_us.content|safe }}</p>
               </div>
         </div>
 
@@ -90,21 +90,15 @@
               </div>
             <div class="swiper about-slider">
                 <div class="swiper-wrapper">
+
+                  {% for x in gallery %}
+
                  <div class="swiper-slide w-72 h-auto">
-                    <img style="height: 100%;width: 100%;" src="{% static 'img/image1.jpg' %}" />
+                    <img style="height: 100%;width: 100%;" src="{{ x.image.url }}" />
                     </div>
-                  <div class="swiper-slide w-72 h-auto">
-                    <img style="height: 100%;width: 100%;" src="{% static 'img/image2.jpg' %}" />
-                  </div>
-                  <div class="swiper-slide w-72 h-auto">
-                    <img style="height: 100%;width: 100%;" src="{% static 'img/image3.jpg' %}" />
-                  </div>
-                  <div class="swiper-slide w-72 h-auto">
-                    <img style="height: 100%;width: 100%;" src="{% static 'img/image3.jpg' %}" />
-                  </div>
-                  <div class="swiper-slide w-72 h-auto">
-                    <img style="height: 100%;width: 100%;" src="{% static 'img/image3.jpg' %}" />
-                  </div>
+
+                    {% endfor %}
+                 
                   
                  
                 </div>

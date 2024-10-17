@@ -13,8 +13,16 @@ date = str(current_date).replace("-","/")
 
 #* CUSTOM USER MODEL
 
+types = {
+    "user" : "user",
+    "sender" : "sender",
+    "cashier" : "cashier",
+    "middle_manager" : "middle_manager",
+
+}
+
 class CustomUser(AbstractUser):
-    user_type = models.CharField(max_length=1000,verbose_name='نوع کاربر',default='مشتری')
+    user_type = models.CharField(max_length=1000,verbose_name='نوع کاربر',default='user',choices=types)
     profile_picture = models.ImageField(verbose_name='عکس پروفایل', null=True, blank=True)
 
 #* CUSTOM USER MODEL

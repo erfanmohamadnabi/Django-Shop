@@ -2,6 +2,9 @@ from django import forms
 from user_account.models import CustomUser
 import re
 
+
+#* SIGNUP FORM
+
 class Signup(forms.Form):
     
     name=forms.CharField(max_length=200,widget=forms.TextInput(attrs={"name":"name","maxlength":"200","class":"input input-bordered w-full my-2"}))
@@ -35,3 +38,31 @@ class Signup(forms.Form):
                 self.add_error('re_password', "رمز عبور یکسان نیست")
 
         return cleaned_data
+    
+#* SIGNUP FORM
+
+
+#* LOGIN FORM
+
+class Login_form(forms.Form):
+    username=forms.CharField(widget=forms.TextInput(attrs={
+        "class":"input input-bordered w-full my-2",
+        "id":"username",'placeholder': 'کد ملی'
+    }),max_length=220)
+
+    password=forms.CharField(widget=forms.PasswordInput(attrs={
+        "class":"input input-bordered w-full my-2",
+        "id":"password",'placeholder': 'رمز عبور'
+    }),max_length=100)
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        find = CustomUser.objects.filter(username = username).first()
+
+        if find is None:
+            raise forms.ValidationError("کاربری با این ایمیل در سایت وجود ندارد !")
+        
+        return username
+    
+
+#* LOGIN FORM
