@@ -225,3 +225,16 @@ CKEDITOR_ALLOW_NONIMAGE_FILES = False
 #* ______________ CKEDITOR ________________________
 
 AUTH_USER_MODEL = 'user_account.CustomUser'
+
+
+#* ______________ DOMINE EMAIL ____________________
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.alphamiveh.ir'  # سرور خروجی
+EMAIL_PORT = 465  # پورت SMTP
+EMAIL_USE_SSL = True  # استفاده از SSL
+EMAIL_HOST_USER = 'alpha123ccv@alphamiveh.ir'  # نام کاربری (ایمیل)
+EMAIL_HOST_PASSWORD = 'eIq2#QDKJpe('  # پسورد
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # ایمیل پیش‌فرض برای ارسال
+
+#* ______________ DOMINE EMAIL ____________________

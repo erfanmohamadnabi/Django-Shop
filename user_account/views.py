@@ -8,6 +8,8 @@ from django.db.models import Sum
 from .models import User_Address as Adresses
 import requests
 import pandas as pd
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create your views here.
 
@@ -21,13 +23,17 @@ API_KEY = 'service.dd66b2a61b0642bcb42f5ee57cd83322'
 
 #* USER DASHBOARD
 
+@login_required(login_url="/login")
 def Dashboard(request):
     notices = Notice.objects.all()
     cart = Cart.objects.filter(user = request.user)
     
     if cart:
         current_cart = Cart.objects.filter(user = request.user,is_paid = False).first()
-        current_items = current_cart.cartitems.all()
+        if current_cart:
+            current_items = current_cart.cartitems.all()
+        else:
+            current_items = None
     else:
         current_cart = 0
         current_items = 0
@@ -103,6 +109,7 @@ def Profile(request):
 
 #* USER FAVORITES
 
+@login_required(login_url="/login")
 def User_Favorites(request):
     favorites = Favorites.objects.filter(user = request.user)
     context = {"favorites":favorites}
@@ -128,6 +135,7 @@ def Delete_Favorites(request,favorite_id):
 
 #* USER CART
 
+@login_required(login_url="/login")
 def User_Cart(request):
     cart = Cart.objects.filter(user = request.user,is_paid = False).first()
     total_quantity = 0
@@ -160,6 +168,7 @@ def Delete_CartItem(request,item_id):
 
 #* USER ADDRESSES
 
+@login_required(login_url="/login")
 def User_Addresses(request):
     addresses = Adresses.objects.filter(user = request.user)
     context = {"addresses":addresses}
@@ -186,6 +195,7 @@ def Delete_Address(request,address_id):
 
 #* USER ADD ADDRESS
 
+@login_required(login_url="/login")
 def User_AddAddress(request):
 
     context = {}
@@ -252,6 +262,7 @@ def User_AddAddress(request):
 
 #* USER EDIT ADDRESS
 
+@login_required(login_url="/login")
 def User_EditAddress(request,id):
     current_address = Adresses.objects.filter(user = request.user,id = id).first()
     if current_address is None:
@@ -329,3 +340,86 @@ def Not_Find(request):
     return render(request,'404.html',context)
 
 #* 404 VIEW
+
+
+#* PRODUCT CHECKOUT VIEW
+
+def CheckOut(request,id):
+    paymant = Cart.objects.filter(id = id,user = request.user,is_paid = False).first()
+    addresses = Adresses.objects.filter(user = request.user)
+
+    if paymant is None:
+        return redirect("/404")
+
+    context = {"addresses":addresses}
+
+    #! PAYMENT 
+
+    if request.POST or request.FILES:
+        first_name = request.POST.get("first-name")
+        last_name = request.POST.get("last-name")
+        phone = request.POST.get("phone")
+        address = request.POST.get("address")
+        image = request.FILES.get("image")
+
+        find_address = Adresses.objects.filter(id = address).first()
+
+        paymant.name = first_name + " " + last_name
+        paymant.address = find_address
+        paymant.phone = phone
+        paymant.image = image
+        paymant.is_paid = True
+        paymant.save()
+
+    #! PAYMENT 
+
+    #! SEND USER EMAIL 
+
+        send_mail(
+            'ثبت سفارش',
+            f"سلام کاربر گرامی! 🌟 سفارش شما با کد پیگیری **{paymant.code}** با موفقیت ثبت گردید. پس از تأیید فیش واریزی توسط مدیر، به زودی با شما، مشتری گرامی، تماس خواهیم گرفت. از اعتماد شما به ما سپاسگزاریم و امیدواریم تجربه‌ای عالی را با ما داشته باشید! 💖 با بهترین آرزوها، [الفا میوه]",
+            settings.DEFAULT_FROM_EMAIL,
+            [request.user.username], 
+            fail_silently=False,
+        )
+
+    #! SEND USER EMAIL
+
+        return redirect(f"/account/cart/checkout/{paymant.id}/success")
+
+       
+
+    return render(request,'checkout.html',context)
+
+#* PRODUCT CHECKOUT VIEW
+
+
+#* PRODUCT SUCCESS PAYMENT VIEW
+
+def Success_Payment(request,id):
+    paymant = Cart.objects.filter(id = id,user = request.user).first()
+
+    if paymant is None:
+        return redirect("/404")
+    
+
+    context = {}
+
+    return render(request,'success_payment.html',context)
+
+#* PRODUCT SUCCESS PAYMENT VIEW
+
+
+#* PRODUCT FACTOR PAYMENT VIEW
+
+def Factor(request,id):
+    paymant = Cart.objects.filter(id = id,user = request.user,is_paid = True).first()
+
+    if paymant is None:
+        return redirect("/404")
+    context = {"paymant":paymant}
+
+    return render(request,'factor.html',context)
+
+#* PRODUCT FACTOR PAYMENT VIEW
+

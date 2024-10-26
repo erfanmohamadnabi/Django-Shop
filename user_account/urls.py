@@ -1,7 +1,7 @@
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
-from .views import Profile,User_Favorites,User_Cart,Delete_CartItem,Delete_Favorites,Dashboard,User_Addresses,User_AddAddress,User_EditAddress,Delete_Address,Not_Find
+from .views import Profile,User_Favorites,User_Cart,Delete_CartItem,Delete_Favorites,Dashboard,User_Addresses,User_AddAddress,User_EditAddress,Delete_Address,Not_Find,CheckOut,Success_Payment,Factor
 from django.urls import path
 
 urlpatterns = [
@@ -12,6 +12,9 @@ urlpatterns = [
     path('account/addresses',User_Addresses,name='address'),
     path('account/addresses/add',User_AddAddress,name='add_address'),
     path('account/addresses/edit/<id>',User_EditAddress,name='edit_addres'),
+    path('account/cart/checkout/<id>',CheckOut,name='checkout'),
+    path('account/cart/checkout/<id>/success',Success_Payment,name='success_payment'),
+    path('account/cart/checkout/<id>/invoice',Factor,name='factor_payment'),
 
     path('404',Not_Find,name='not_find'),
 

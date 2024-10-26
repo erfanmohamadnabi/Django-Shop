@@ -32,11 +32,16 @@ class Blog_Category(models.Model):
     def get_absolute_url(self):
         return reverse("weblog_category",args=[self.en_name])
     
+    def save(self, *args, **kwargs):
+        if not self.en_name:
+            self.en_name = self.en_name.replace(' ','-')
+        super().save(*args, **kwargs)
+    
 
 
 class Blog(models.Model):
     title = models.CharField(max_length=300,verbose_name="عنوان مقاله")
-    slug = models.CharField(max_length=300,verbose_name="اسلاگ",blank=True,null=True)
+    slug = models.CharField(max_length=300,verbose_name="نام انگلیسی",blank=True,null=True)
     date = models.CharField(max_length=100,verbose_name="تاریخ",default=date)
     image = models.ImageField(verbose_name="تصویر مقاله")
     text = RichTextField(verbose_name="متن مقاله")
@@ -47,8 +52,8 @@ class Blog(models.Model):
     keywords = models.CharField(max_length=500,verbose_name = "کلیدواژه ها را برای سئو وارد کنید (  با علامت , جدا کنید  )")
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = self.title.replace(' ','-')
+        if self.slug:
+            self.slug = self.slug.replace(' ','-')
         super().save(*args, **kwargs)
     
 

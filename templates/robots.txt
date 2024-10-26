@@ -1,0 +1,4 @@
+User-agent: *
+User-agent: PetalBot
+Disallow: /login
+Disallow: /signup

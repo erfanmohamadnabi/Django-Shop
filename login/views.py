@@ -9,7 +9,15 @@ from django.contrib.auth.decorators import login_required
 #* SIGN UP USER
 
 def SignUp_User(request):
-    frm=Signup(request.POST or None)
+
+    #! REDIRECT TO HOME PAGE
+
+    if request.user.is_authenticated:
+        return redirect('/')
+    
+    #! REDIRECT TO HOME PAGE
+
+    frm = Signup(request.POST or None)
     context = {"frm":frm}
 
     if request.POST:
@@ -17,6 +25,10 @@ def SignUp_User(request):
         print("salam")
         if frm.is_valid():
             user_type = request.POST.get("user_type")
+            print(user_type)
+            print(user_type)
+            print(user_type)
+            print(user_type)
             data = frm.cleaned_data
             name = data.get("name")
             email = data.get('email')
@@ -32,6 +44,8 @@ def SignUp_User(request):
             if user_type == 'user':
                 new_user.user_type = 'user'
                 new_user.save()
+                return redirect("/login")
+            
             elif user_type == 'colleague':
                 new_user.user_type = "sender"
                 new_user.save()
@@ -53,6 +67,14 @@ def Success_Signup(request):
 #* LOGIN VIEW
 
 def Login_User(request):
+
+    #! REDIRECT TO HOME PAGE
+
+    if request.user.is_authenticated:
+        return redirect('/')
+    
+    #! REDIRECT TO HOME PAGE
+
     frm = Login_form(request.POST or None)
     context = {"frm":frm}
 

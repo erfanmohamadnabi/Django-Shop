@@ -94,7 +94,7 @@
                             {% endif %}
 
                             {% if cart.final_price and cart.final_price > 30000 %}
-                            <button class="btn bg-stone-800 hover:bg-stone-900 text-white">پرداخت</button>
+                            <a href="/account/cart/checkout/{{ cart.id }}"><button class="btn bg-stone-800 hover:bg-stone-900 text-white">پرداخت</button></a>
                             {% else %}
                             <button style="margin-top: 10px;background-color: red;" class="btn bg-stone-800 hover:bg-stone-900 text-white">سبد خرید خالی میباشد</button>
                             {% endif %}

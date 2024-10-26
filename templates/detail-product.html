@@ -109,9 +109,21 @@
                         {% endif %}
                         <span class="text-yellow-500">{{ product.price }} تومان</span>
                       </div>
-                      <button class="btn bg-stone-800 hover:bg-stone-900 text-white my-6">افزودن به سبد خرید</button>
-                      <div>
-                        <a class="border px-4 py-2 rounded-xl" href="comparison.html">افزودن به علاقه مندی</a>
+                      <div style="display: flex;flex-direction: column;">
+
+                        <!--! LIKE AND ORDER FORM -->
+
+                          <form class="like-form" style="visibility: hidden;height: 0;"  action="" method="post">
+                            {% csrf_token %}
+                            <input name="product-id" type="text" value="{{ product.id }}">
+                            <input class="product-type" name="request-type" type="text" value="">
+                            <button type="submit"></button>
+                          </form>
+
+                        <!--! LIKE AND ORDER FORM -->
+
+                        <button style="width: 200px;" class="btn bg-stone-800 hover:bg-stone-900 text-white my-2 submit-order">افزودن به سبد خرید</button>
+                        <a style="width: 200px;display: flex;align-items: center;justify-content: center;height: 40px;cursor: pointer;" class="border px-4 py-2 rounded-xl submit-like" >افزودن به علاقه مندی</a>
                       </div>
                     </div>
                     <div class="hidden lg:block col-span-4">

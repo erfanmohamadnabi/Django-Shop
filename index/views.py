@@ -22,14 +22,17 @@ def Index(request):
     if request.POST.get("product-id"):
         product_id = request.POST.get("product-id")
         request_type = request.POST.get("request-type")
+
+        
         
 
         #! NEW LIKE USER
 
         if request_type == "like":
+
             if request.user.is_authenticated:
                 product = Product.objects.get(id = product_id)
-                like = Favorites.objects.filter(product = product).first()
+                like = Favorites.objects.filter(product = product,user = request.user).first()
 
                 if like is None:
                     like = Favorites.objects.create(user = request.user,product = product)
@@ -54,6 +57,10 @@ def Index(request):
                 product = Product.objects.get(id = product_id)
                 cart = Cart.objects.filter(is_paid = False,user = request.user).first()
                 cart_item = CartItem.objects.filter(cart = cart,product = product).first()
+
+                if cart is None:
+                    cart = Cart.objects.create(user = request.user)
+                    cart.save()
 
                 if cart:
                     if cart_item:

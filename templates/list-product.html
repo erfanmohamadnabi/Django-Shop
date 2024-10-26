@@ -35,16 +35,23 @@
           </nav>  
             </div>
             <div class="grid grid-cols-12 gap-4">
+
+
                 <div class="col-span-12 lg:col-span-3 order-2 lg:order-1">
-                  <div class="bg-white rounded-3xl mb-4 p-4">
+
+                <form action="/list-product/filter" method="get">
+
+
+                    <div class="bg-white rounded-3xl mb-4 p-4">
                     <h3 class="font-YekanBakh-ExtraBold text-base">فیلتر بر اساس قیمت:</h3>
                     <div class="my-4">
-                      <input type="range" min="0" max="100" value="40" class="range range-warning" />
+                        <input dir="ltr" type="range" name="range" min="0" max="1000000" value="0" class="range range-warning" />
                     </div>
-                    <span>قیمت تا 143000 هزار تومان</span>
+                    <span class="range-price">قیمت تا 0 هزار تومان</span>
+                    </div>
 
-                  </div>
-                  <div class="bg-white rounded-3xl mb-4 p-4">
+
+                  <!-- <div class="bg-white rounded-3xl mb-4 p-4">
                     <h3 class="font-YekanBakh-ExtraBold text-base">دسته های محصولات:</h3>
                     <div class="my-4">
                       <ul class="menu">
@@ -70,32 +77,66 @@
                         <li><a>دسته بندی چهارم</a></li>
                       </ul>
                     </div>
-                  </div>
-                  <div class="bg-white rounded-3xl p-4">
-                    <h3 class="font-YekanBakh-ExtraBold text-base">فیلتر براساس برند:</h3>
+                  </div> -->
+                 
+                 
+                    <div class="bg-white rounded-3xl p-4">
+                    <h3 class="font-YekanBakh-ExtraBold text-base">مرتب سازی:</h3>
                     <div class="flex flex-col mt-4 gap-4">
                       <div class="flex items-center justify-between">
-                        <span>رونیکس</span>
-                        <input type="radio" name="radio-6" class="radio radio-warning" checked />
+                        <span>ارزان ترین</span>
+                        <input type="radio" name="order" value="price" class="radio radio-warning"  />
                       </div>
                       <div class="flex items-center justify-between">
-                        <span>دیوالت</span>
-                        <input type="radio" name="radio-6" class="radio radio-warning" checked />
+                        <span>گران ترین</span>
+                        <input type="radio" name="order" value="-price" class="radio radio-warning"  />
                       </div>
                       <div class="flex items-center justify-between">
-                        <span>ماکیتا</span>
-                        <input type="radio" name="radio-6" class="radio radio-warning" checked />
+                        <span>پرفروش ترین</span>
+                        <input type="radio" name="order" value="-buy" class="radio radio-warning"  />
                       </div>
                       <div class="flex items-center justify-between">
-                        <span>توسن</span>
-                        <input type="radio" name="radio-6" class="radio radio-warning" checked />
+                        <span>جدیدترین</span>
+                        <input type="radio" name="order" value="-id" class="radio radio-warning"  />
                       </div>
                     </div>
-                  </div>
+                    </div>
+
+                  
+                    <div class="bg-white rounded-3xl p-4 mt-4">
+                    <h3 class="font-YekanBakh-ExtraBold text-base">دسته بندی:</h3>
+                    <div class="flex flex-col mt-4 gap-4">
+                      <div class="flex items-center justify-between">
+                        <span>همه محصولات</span>
+                        <input type="radio" name="category" value="all" class="radio radio-warning" checked />
+                      </div>
+
+                      {% for x in categorys %}
+
+                      <div class="flex items-center justify-between">
+                        <span>{{ x.name }}</span>
+                        <input value="{{ x.english_name }}" type="radio" name="category" class="radio radio-warning"  />
+                      </div>
+
+                      {% endfor %}
+                      
+                    </div>
+                    </div>
+
+                    <button type="submit" style="width: 150px;height: 40px;background-color: black;color: white;margin-top: 20px;border-radius: 10px;">اعمال فیلتر</button>
+                
+                
+                </form>
+
                 </div>
+
+
+
                 <div class="col-span-12 lg:col-span-9 order-1 lg:order-2">
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                      {% if products %}
 
                       {% for x in products %}
 
@@ -104,7 +145,7 @@
                               <img style="width: 100%;height: 270px;object-fit: cover;border-radius: 10px;" class="mb-4" src="{{ x.image.url }}" alt="">
                             </a>
                           <div class="text-center">
-                            <a href="single-product.html"><h3 class="font-YekanBakh-ExtraBold text-base">{{ x.name }}</h3></a>
+                            <a href="{{ x.get_absolute_url }}"><h3 class="font-YekanBakh-ExtraBold text-base">{{ x.name }}</h3></a>
                             <div class="flex justify-center gap-4 text-base mt-4">
                               {% if x.off_price %}
                               <span class="line-through">{{ x.off_price }} تومان</span>
@@ -144,17 +185,33 @@
                       </div>
 
                       {% endfor %}
+
+                      {% else %}
+                      <p style="font-size: 20px;margin: 20px;">محصولی یافت نشد !</p>
+                      {% endif %}
                       
 
                     </div>
 
 
                     <div class="flex justify-center mt-10">
+
+
+                      {% if products %}
                       <div class="join">
-                        <button class="join-item btn">«</button>
-                        <button class="join-item btn">صفحه 22</button>
-                        <button class="join-item btn">»</button>
+                          {% if products.has_previous %}
+                              <a style="border-radius: 10px;" href="?page={{ products.previous_page_number }}" class="join-item btn">قبلی</a>
+                          {% endif %}
+
+                          <button style="border-radius: 10px;" class="join-item btn">صفحه {{ products.number }}</button>
+
+                          {% if products.has_next %}
+                              <a style="border-radius: 10px;" href="?page={{ products.next_page_number }}" class="join-item btn">بعدی</a>
+                          {% endif %}
                       </div>
+                    {% endif %}
+
+                    
                     </div>
 
 
@@ -193,6 +250,20 @@
           
           $(this).closest('.bg-white').find('.like-form button').click(); 
       });
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+      // وقتی مقدار input تغییر کرد
+      $('.range').on('input', function() {
+          var currentValue = $(this).val();
+          // مقدار را مستقیماً در span نمایش دهید
+          $('.range-price').text('قیمت تا ' + currentValue.toLocaleString() + ' تومان');
+      });
+      // مقدار اولیه را هنگام بارگذاری صفحه تنظیم کنید
+      var initialValue = $('.range').val();
+      $('.range-price').text('قیمت تا ' + initialValue.toLocaleString() + ' تومان');
   });
 </script>
 

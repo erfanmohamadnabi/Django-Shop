@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}<title>جزئیات پرداخت</title>{% endblock %}
+
+{% block content %}
+
+<section class="my-20 px-4">
+    <div class="container mx-auto max-w-screen-xl">
+        <div class="bg-white max-w-md rounded-3xl p-6 flex flex-col text-center mx-auto justify-center leading-8">
+            <img class="w-1/2 mx-auto mb-4" src="{% static 'img/invoice.webp' %}" alt="">
+            <p class="text-xl font-YekanBakh mb-4">نام خریدار : {{ paymant.name }}</p>
+            <p class="text-xl font-YekanBakh mb-4">ایمیل خریدار : {{ paymant.user.username }}</p>
+            <p class="text-xl font-YekanBakh mb-4">شماره خریدار : {{ paymant.phone }}</p>
+            <p class="text-xl font-YekanBakh mb-4">کد سفارش : {{ paymant.code }}</p>
+            <p class="text-xl font-YekanBakh mb-4">تاریخ خرید : {{ paymant.created_at }}</p>
+            
+            <table class="min-w-full mt-4 border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border border-gray-300 py-2 text-center">محصول</th>
+                        <th style="text-align: center;" class="border border-gray-300 py-2 text-right">قیمت (تومان)</th>
+                        <th style="text-align: center;" class="border border-gray-300 py-2 text-right">تعداد</th>
+                        <th style="text-align: center;" class="border border-gray-300 py-2 text-right">جمع (تومان)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in paymant.cartitems.all %}
+                    <tr>
+                        <td class="border border-gray-300 p-2">{{ item.product.name }}</td>
+                        <td class="border border-gray-300 p-2 text-right">{{ item.price|floatformat:2 }} تومان</td>
+                        <td class="border border-gray-300 p-2 text-right">{{ item.quantity }}</td>
+                        <td class="border border-gray-300 p-2 text-right">{{ item.total_price|floatformat:2 }} تومان</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="mt-4">
+                <p class="text-lg font-bold">جمع کل: <span>{{ paymant.total_price|floatformat:2 }} تومان</span></p>
+            </div>
+
+            <a class="bg-yellow-500 py-2 px-6 rounded-xl mt-4" href="tel:{{ site_data.phone_contact }}">تماس با پشتیبانی</a>
+            <a class="bg-yellow-500 py-2 px-6 rounded-xl mt-4" href="/">برو به صفحه اصلی</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block js %}
+    
+<script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+
+{% endblock %}
+

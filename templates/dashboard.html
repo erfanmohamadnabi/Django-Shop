@@ -189,7 +189,7 @@
                         <div class="flex items-center justify-between bg-yellow-500 rounded-3xl p-8">
                             
                             <div class="leading-8 ml-2 text-white">
-                              {% if current_items == 0 %}
+                              {% if current_items == 0 or current_items == None  %}
                               <p class="text-xl font-YekanBakh-ExtraBold">0 محصول</p>
                               {% else %}
                                 <p class="text-xl font-YekanBakh-ExtraBold">{{ current_items.count }} محصول</p>
@@ -311,9 +311,25 @@
                                         {% endfor %}
                                         
                                     </div>
+
+                                    {% if x.is_paid == True %}
+
                                     <div>
-                                        <button class="px-8 py-2 bg-stone-800 rounded-xl text-white">مشاهده فاکتور</button>
+                                        <a href="/account/cart/checkout/{{ x.id }}/invoice">
+                                          <button class="px-8 py-2 bg-stone-800 rounded-xl text-white">مشاهده فاکتور</button>
+                                        </a>
                                     </div>
+
+                                    {% else %}
+
+                                    <div>
+                                      <a href="/account/cart/checkout/{{ x.id }}">
+                                        <button class="px-8 py-2 bg-stone-800 rounded-xl text-white">پرداخت</button>
+                                      </a>
+                                    </div>
+
+                                    {% endif %}
+
                                 </div>
                             </div>
 

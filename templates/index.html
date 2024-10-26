@@ -42,7 +42,7 @@
 
             <div class="swiper-slide">
               <div class="border border-slate-200 bg-white rounded-3xl leading-10">
-                <a href="shop.html" class="flex flex-col items-center justify-center p-4">
+                <a href="{{ x.get_absolute_url }}" class="flex flex-col items-center justify-center p-4">
                   <img style="width: 100px; height: 100px;" class=" mb-4 rounded-full" src="{{ x.image.url }}" alt="">
                   <h3 class="font-YekanBakh-ExtraBold text-base">{{ x.name }}</h3>  
                 </a>
@@ -144,30 +144,32 @@
 
                   <div class="grid grid-cols-4 gap-2 leading-4">
                     <div class="flex flex-col text-center text-white bg-stone-900 px-2 py-4 rounded-2xl">
-                      <span class="countdown font-YekanBakh-SemiBold text-3xl">
-                        <span id="counterElement" style="--value:60;"></span>
-                      </span>
-                      ثانیه
-                    </div> 
-                    <div class="flex flex-col text-center text-white bg-stone-900 px-2 py-4 rounded-2xl">
-                      <span class="countdown font-YekanBakh-SemiBold text-3xl">
-                        <span style="--value:10;"></span>
-                      </span>
-                      دقیقه
-                    </div> 
-                    <div class="flex flex-col text-center text-white bg-stone-900 px-2 py-4 rounded-2xl">
-                      <span class="countdown font-YekanBakh-SemiBold text-3xl">
-                        <span style="--value:24;"></span>
-                      </span>
-                      ساعت
-                    </div> 
-                    <div class="flex flex-col text-center text-white bg-stone-900 px-2 py-4 rounded-2xl">
-                      <span class="countdown font-YekanBakh-SemiBold text-3xl">
-                        <span style="--value:4;"></span>
-                      </span>
-                      روز
+                        <span class="countdown font-YekanBakh-SemiBold text-3xl">
+                            <span id="secondElement" style="--value:60;"></span>
+                        </span>
+                        ثانیه
                     </div>
-                  </div>
+                    <div class="flex flex-col text-center text-white bg-stone-900 px-2 py-4 rounded-2xl">
+                        <span class="countdown font-YekanBakh-SemiBold text-3xl">
+                            <span id="minuteElement" style="--value:10;"></span>
+                        </span>
+                        دقیقه
+                    </div>
+                    <div class="flex flex-col text-center text-white bg-stone-900 px-2 py-4 rounded-2xl">
+                        <span class="countdown font-YekanBakh-SemiBold text-3xl">
+                            <span id="hourElement" style="--value:24;"></span>
+                        </span>
+                        ساعت
+                    </div>
+                    <div class="flex flex-col text-center text-white bg-stone-900 px-2 py-4 rounded-2xl">
+                        <span class="countdown font-YekanBakh-SemiBold text-3xl">
+                            <span id="dayElement" style="--value:2;"></span>
+                        </span>
+                        روز
+                    </div>
+                </div>
+
+                  
 
                 </div>
               </div>

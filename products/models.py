@@ -4,6 +4,7 @@ from user_account.models import CustomUser
 from jdatetime import date, datetime as jdatetime
 import random
 from django.urls import reverse
+from user_account.models import User_Address
 
 # Create your models here.
 
@@ -30,9 +31,12 @@ class Product_Category(models.Model):
         verbose_name="دسته بندی جدید"
         verbose_name_plural="اضافه کردن دسته بندی"
 
+    def get_absolute_url(self):
+        return reverse("category_product",args=[self.english_name])
+
     def save(self, *args, **kwargs):
-        if not self.english_name:
-            self.english_name = self.title.replace(' ','-')
+        if self.english_name:
+            self.english_name = self.english_name.replace(' ','-')
         super().save(*args, **kwargs)
 
 #* PRODUCT CATEGORY MODEL
@@ -43,14 +47,14 @@ class Product(models.Model):
     name = models.CharField(verbose_name='نام محصول',max_length=1000)
     english_name = models.CharField(verbose_name='نام محصول ( انگلیسی )',max_length=1000)
     content = RichTextUploadingField(verbose_name='درباره محصول')
-    price = models.CharField(verbose_name='قیمت نهایی محصول',max_length=1000)
+    price = models.IntegerField(verbose_name='قیمت نهایی محصول')
     discount_percentage = models.IntegerField(verbose_name='درصد تخفیف',blank=True,null=True)
-    off_price = models.CharField(verbose_name='قیمت تخفیف خورده ( اختیاری )',null=True,blank=True,max_length=1000)
+    off_price = models.CharField(verbose_name='قیمت تخفیف خورده ',null=True,blank=True,max_length=1000)
     category = models.ForeignKey(Product_Category,verbose_name='دسته بندی',on_delete=models.CASCADE)
     image = models.ImageField(upload_to='product_image',verbose_name='تصویر شاخص محصول')
     buy = models.DecimalField(verbose_name = "تعداد فروش",default = 0 , max_digits=20,decimal_places=0)
     visit = models.DecimalField(verbose_name = "تعداد بازدید", default = 0 , max_digits=20,decimal_places=0)
-    ranking_AVG = models.DecimalField(max_digits=20,decimal_places=0,verbose_name = "رنکینگ محصول",null = True,blank = True,default = 0)
+    ranking_AVG = models.DecimalField(max_digits=20,decimal_places=0,verbose_name = "رنکینگ محصول",null = True,blank = True,default = 0,editable=False)
 
     #! SEO FIELD
 
@@ -72,18 +76,32 @@ class Product(models.Model):
 
         #! ADD DISCOUNT 
         
-        if self.pk:
+        is_new_product = self.pk is None
+    
+        if not is_new_product:
             old_product = Product.objects.get(pk=self.pk)
-           
-            if old_product.price != self.price:
-               
-                if self.discount_percentage:
-                    self.off_price = self.price
-                    original_price = int(self.price)  
-                    discount_amount = (self.discount_percentage / 100) * original_price
-                    self.price = int(original_price - discount_amount)
-                else:
-                    self.off_price = None
+        
+        if old_product.price != self.price:
+            self.off_price = self.price
+            if self.discount_percentage:
+                original_price = int(self.price)  
+                discount_amount = (self.discount_percentage / 100) * original_price
+                self.price = int(original_price - discount_amount)
+                self.off_price = original_price  # حفظ قیمت اصلی برای حالت ویرایش
+            else:
+                self.off_price = None
+        else:
+            # برای محصولات جدید، محاسبه تخفیف را انجام دهید
+            self.off_price = self.price
+            if self.discount_percentage:
+                original_price = int(self.price)  
+                discount_amount = (self.discount_percentage / 100) * original_price
+                self.price = int(original_price - discount_amount)
+            else:
+                self.off_price = None
+
+        super().save(*args, **kwargs)
+
 
         #! ADD DISCOUNT 
 
@@ -140,6 +158,10 @@ class Cart(models.Model):
     created_at = models.CharField(default=date,verbose_name='تاریخ ایجاد',max_length=1000)
     image = models.ImageField(verbose_name='عکس فیش واریزی',blank=True,null=True)
     code = models.CharField(verbose_name='کد سفارش',max_length=1000,blank=True,null=True)
+    address = models.ForeignKey(User_Address,verbose_name='ادرس',blank=True,null=True,on_delete=models.CASCADE)
+    phone = models.CharField(verbose_name='شماره تماس',max_length=1000,blank=True,null=True)
+    name = models.CharField(verbose_name='نام و نام خانوادگی',max_length=1000,blank=True,null=True)
+    total_payment = models.IntegerField(verbose_name='مبلغ کل',blank=True,null=True)
     is_paid = models.BooleanField(default=False,verbose_name='پرداخت شده')
 
     #! TOTAL PRICE
@@ -149,6 +171,8 @@ class Cart(models.Model):
         total = 0
         for cart_item in self.cartitems.all():
             total += (cart_item.price * cart_item.quantity)
+            self.total_payment = total
+            self.save()
         return int(total)
 
     #! TOTAL PRICE
